@@ -5,14 +5,14 @@ var session      = require('express-session');
 var flash    = require('connect-flash');
 var path = require('path');
 // var secrets = require('./secrets');
-var methodOverride = require('method-override');
+// var methodOverride = require('method-override');
 
-module.exports = function (app, passport) {
+module.exports = function (app) {
   var node_env = process.env.NODE_ENV;
-  var isProduction = node_env === 'production';
-  var port = isProduction? 80 : 5000;
+  // var isProduction = node_env === 'production';
+  // var port = isProduction? 80 : 5000;
   
-  app.set('port', port);
+  app.set('port', 80);
 
   // X-Powered-By header has no functional value.
   // Keeping it makes it easier for an attacker to build the site's profile
@@ -23,7 +23,7 @@ module.exports = function (app, passport) {
   app.set('view engine', 'ejs');
   app.set('view cache', false);
 
-  if(isProduction) {
+  // if(isProduction) {
     // var pg = require('pg');
     // var Knexfile = require("./knexfile.js");
     // var pgSimpleStore = require('connect-pg-simple')(session);
@@ -39,31 +39,31 @@ module.exports = function (app, passport) {
     // }));
 
     // temprorary did it like this, because we dont have DB yet.
-    app.use(session({
-      secret: 'fabdocconsole',
-      resave: false,
-      cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 } // 7 days
-    })); // session secret  
-  }else{
-    app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret  
-  }
+    // app.use(session({
+    //   secret: 'fabdocconsole',
+    //   resave: false,
+    //   cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 } // 7 days
+    // })); // session secret  
+  // }else{
+  //   app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret  
+  // }
   
-  app.use(passport.initialize());
-  app.use(passport.session()); // persistent login sessions
+  // app.use(passport.initialize());
+  // app.use(passport.session()); // persistent login sessions
   app.use(flash()); 
 
   app.use(cookieParser());
   app.use(bodyParser.urlencoded({limit: '50mb',extended: true})); // for parsing application/x-www-form-urlencoded
   app.use(bodyParser.json({limit: '50mb'}));
-  app.use(methodOverride());
-  app.use(express.static(path.join(__dirname, '../..', 'public')));
+  // app.use(methodOverride());
+  app.use(express.static(path.join(__dirname, '../..', 'client')));
  
   // common ejs properties
-  app.use(function(req, res, next){
-    res.locals.isDev = !isProduction;
-    res.locals.login = req.isAuthenticated();
-    next();
-  }); 
+  // app.use(function(req, res, next){
+  //   res.locals.isDev = !isProduction;
+  //   res.locals.login = req.isAuthenticated();
+  //   next();
+  // }); 
 
   // I am adding this here so that the Heroku deploy will work
   // Indicates the app is behind a front-facing proxy,
@@ -115,11 +115,11 @@ module.exports = function (app, passport) {
   console.log('--------------------------');
   console.log('===> 😊  Starting Server . . .');
   console.log('===>  Environment: ' + node_env);
-  if(isProduction) {
-    console.log('===> 🚦  Note: In order for authentication to work in production');
-    console.log('===>           you will need a secure HTTPS connection');
-    // sess.cookie.secure = true; // Serve secure cookies
-  }
+  // if(isProduction) {
+  //   console.log('===> 🚦  Note: In order for authentication to work in production');
+  //   console.log('===>           you will need a secure HTTPS connection');
+  //   // sess.cookie.secure = true; // Serve secure cookies
+  // }
 
   // app.use(session(sess));
 

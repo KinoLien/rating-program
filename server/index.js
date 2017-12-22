@@ -5,7 +5,7 @@ var express = require('express');
 // var webpack = require('webpack');
 var app = express();
 var http = require('http');
-var passport = require('passport');
+
 // var job = require('./services/mailer');
 // Db.initialisation();
 
@@ -27,13 +27,11 @@ if (isDev) {
   // app.use(require('webpack-hot-middleware')(compiler));
 }
 
-require('./config/passport')(passport); // pass passport for configuration
-
 // Bootstrap application settings
-require('./config/express')(app, passport);
+require('./config/express')(app);
 
 // Bootstrap routes
-require('./config/routes')(app, passport);
+require('./config/routes')(app);
 
 // Bootstrap routes
 // require('./config/locales')(app);

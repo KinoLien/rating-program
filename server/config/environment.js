@@ -1,5 +1,5 @@
 
-var utils = require('../utils');
+// var utils = require('../utils');
 
 module.exports = {
 
@@ -16,26 +16,28 @@ module.exports = {
 
     authorize: function authorize(io) {
         io.use(function (socket, next) {
-            var tokenRoom,
-                params = utils.getParamPairs(socket.request);
+            // var tokenRoom,
+            //     params = utils.getParamPairs(socket.request);
 
-            var isBrowser = utils.getCookie(socket.request);
-            var isDevice = (tokenRoom = params["token"]) && io.sockets.adapter.rooms[tokenRoom];
+            // var isBrowser = utils.getCookie(socket.request);
+            // var isDevice = (tokenRoom = params["token"]) && io.sockets.adapter.rooms[tokenRoom];
 
-            socket.isBrowser = isBrowser;
-            socket.token = tokenRoom || utils.getToken();
+            // socket.isBrowser = isBrowser;
+            // socket.token = tokenRoom || utils.getToken();
 
-            if( isBrowser || isDevice ){
-                // browser open room or room exist
-                console.log("OK");
-                if( isDevice ){
-                    socket.to(tokenRoom).emit('connected_with_device', tokenRoom);
-                }
-                next();
-            } else{
-                console.log("Fail");
-                next(new Error("Server reject this connection with token: " + tokenRoom));
-            }
+            // if( isBrowser || isDevice ){
+            //     // browser open room or room exist
+            //     console.log("OK");
+            //     if( isDevice ){
+            //         socket.to(tokenRoom).emit('connected_with_device', tokenRoom);
+            //     }
+            //     next();
+            // } else{
+            //     console.log("Fail");
+            //     next(new Error("Server reject this connection with token: " + tokenRoom));
+            // }
+
+            next();
         });
     },
 }

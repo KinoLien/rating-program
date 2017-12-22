@@ -2,10 +2,11 @@
  * Routes for express app
  */
 var express = require('express');
-var _ = require('lodash');
+// var _ = require('lodash');
 var path = require('path');
-var utils = require('../utils');
-var interface = require('../services/data-interface');
+// var utils = require('../utils');
+
+var constants = require('./const');
 
 var isDev = process.env.NODE_ENV === 'development';
 
@@ -15,27 +16,7 @@ var isDev = process.env.NODE_ENV === 'development';
 // var compiled_app_module_path = path.resolve(__dirname, '../../', 'public', 'assets', 'server.js');
 // var App = require(compiled_app_module_path);
 
-// route middleware to make sure a user is logged in
-function loginRequired(req, res, next) {
-    // if user is authenticated in the session, carry on
-    // if(process.env.NODE_ENV === 'development' || req.isAuthenticated()) return toNext();    
-    if(req.isAuthenticated()) return next();
-
-    console.log("return to login");
-    // if they aren't redirect them to the home page
-    res.redirect('/login');
-}
-
-module.exports = function(app, passport) {
-
-    // =====================================
-    // Normal Files ========================
-    // =====================================
-    app.get('/client/:type(css|js|images|fonts)/:name', function(req, res, next) {
-        var type = req.params.type;
-        var name = req.params.name;
-        res.sendFile(path.resolve(__dirname, '../../client', type, name));
-    });
+module.exports = function(app) {
 
     // =====================================
     // API =================================
@@ -56,257 +37,176 @@ module.exports = function(app, passport) {
     // =====================================
     // CONSOLE =============================
     // =====================================
-    app.get('/', function (req, res, next) {
-        res.render(path.resolve(__dirname, '../', 'views/index.ejs'));
+    app.get('/ratings/:number', function (req, res, next) {
+        var num = req.params.number;
+        var ratings = constants.ratings;
+        if(isNaN(num) || num <= 0 || num > ratings.length){
+            res.status(404);
+        }else{
+            res.render(path.resolve(__dirname, '../', 'views/ratings.ejs'), { info: ratings[num - 1] });
+        }
     });
+
+
+    // app.get('/', function (req, res, next) {
+    //     res.render(path.resolve(__dirname, '../', 'views/index.ejs'));
+    // });
     // show the login form
-    app.get('/login', function(req, res) {
-        // render the page and pass in any flash data if it exists
-        res.render(path.resolve(__dirname, '../', 'views/login.ejs'));
-    });
+    // app.get('/login', function(req, res) {
+    //     // render the page and pass in any flash data if it exists
+    //     res.render(path.resolve(__dirname, '../', 'views/login.ejs'));
+    // });
 
-    app.get('/signup', function(req, res) {
-        // render the page and pass in any flash data if it exists
-        res.render(path.resolve(__dirname, '../', 'views/signup.ejs'), { message: req.flash('signupMessage') });
-    });
+    // app.get('/signup', function(req, res) {
+    //     // render the page and pass in any flash data if it exists
+    //     res.render(path.resolve(__dirname, '../', 'views/signup.ejs'), { message: req.flash('signupMessage') });
+    // });
 
 
-    app.get('/create/project', loginRequired, function (req, res, next) {
-        res.render(path.resolve(__dirname, '../', 'views/createProject.ejs'));
-        // req.session.project = 1;
-    });
+    // app.get('/create/project', loginRequired, function (req, res, next) {
+    //     res.render(path.resolve(__dirname, '../', 'views/createProject.ejs'));
+    //     // req.session.project = 1;
+    // });
 
-    app.post('/create/project/add', loginRequired, function(req, res, next){
-        var formbody = req.body;
-        var userId = req.user;
+    // app.post('/create/project/add', loginRequired, function(req, res, next){
+    //     var formbody = req.body;
+    //     var userId = req.user;
 
-        interface.addProject(formbody.projectName, userId, formbody.description, formbody.license)
-            .then(
-                function(result){
-                    req.session.project = parseInt(result.id);
-                    // console.log(result);
-                    res.redirect('/project/' + result.id + '/precommit');
-                    // res.status(200).send("OK");
-                },
-                function(err){
-                    res.status(500).json({error: "Internal server error: " + err});
-                }
-            );
-    });
+    //     interface.addProject(formbody.projectName, userId, formbody.description, formbody.license)
+    //         .then(
+    //             function(result){
+    //                 req.session.project = parseInt(result.id);
+    //                 // console.log(result);
+    //                 res.redirect('/project/' + result.id + '/precommit');
+    //                 // res.status(200).send("OK");
+    //             },
+    //             function(err){
+    //                 res.status(500).json({error: "Internal server error: " + err});
+    //             }
+    //         );
+    // });
 
-    app.get('/project/:id/precommit', loginRequired, function (req, res, next) {
-        res.render(path.resolve(__dirname, '../', 'views/precommit.ejs'), { project: req.params.id });
-    });
+    // app.get('/project/:id/precommit', loginRequired, function (req, res, next) {
+    //     res.render(path.resolve(__dirname, '../', 'views/precommit.ejs'), { project: req.params.id });
+    // });
 
-    app.get('/project/:id/commits', function(req, res, next){
-        var id = req.params.id;
-        if(!id || isNaN(id)) res.status(404);
-        else{
-            interface.getCommits(parseInt(id))
-                .then(
-                    function(results){
-                        // to return
-                        var appendUrl = req.user? ("/project/" + id + "/precommit") : "";
-                        var removeBase = req.user? ("/project/" + id + "/commit/") : "";
-                        res.render(path.resolve(__dirname, '../', 'views/commitList.ejs'), { itemsStr: JSON.stringify(results || []), appendUrl: appendUrl, removeBase: removeBase } );
-                    },
-                    function(err){ res.status(500).json({error: "Internal server error: " + err}); }
-                );
-        }
-    });
+    // app.get('/project/:id/commits', function(req, res, next){
+    //     var id = req.params.id;
+    //     if(!id || isNaN(id)) res.status(404);
+    //     else{
+    //         interface.getCommits(parseInt(id))
+    //             .then(
+    //                 function(results){
+    //                     // to return
+    //                     var appendUrl = req.user? ("/project/" + id + "/precommit") : "";
+    //                     var removeBase = req.user? ("/project/" + id + "/commit/") : "";
+    //                     res.render(path.resolve(__dirname, '../', 'views/commitList.ejs'), { itemsStr: JSON.stringify(results || []), appendUrl: appendUrl, removeBase: removeBase } );
+    //                 },
+    //                 function(err){ res.status(500).json({error: "Internal server error: " + err}); }
+    //             );
+    //     }
+    // });
 
-    app.post('/project/:id/push', loginRequired, function(req, res, next){
-        var userId = req.user;
-        var id = req.params.id;
-        if(!id || isNaN(id)) res.status(404);
-        else{
-            interface.pushCommits(id, req.body.commits)
-                .then(function(result){ res.status(200).json({ status: "OK" }); })
-                .catch(function(err){ res.status(500).json({error: "Internal server error: " + err}); });
-        }
-    });
+    // app.post('/project/:id/push', loginRequired, function(req, res, next){
+    //     var userId = req.user;
+    //     var id = req.params.id;
+    //     if(!id || isNaN(id)) res.status(404);
+    //     else{
+    //         interface.pushCommits(id, req.body.commits)
+    //             .then(function(result){ res.status(200).json({ status: "OK" }); })
+    //             .catch(function(err){ res.status(500).json({error: "Internal server error: " + err}); });
+    //     }
+    // });
 
-    // for single commit save
-    app.post('/project/:id/commit', loginRequired, function(req, res, next){
-        var userId = req.user;
-        var id = req.params.id;
-        if(!id || isNaN(id)) res.status(404);
-        else{
-            var commit = req.body;
+    // // for single commit save
+    // app.post('/project/:id/commit', loginRequired, function(req, res, next){
+    //     var userId = req.user;
+    //     var id = req.params.id;
+    //     if(!id || isNaN(id)) res.status(404);
+    //     else{
+    //         var commit = req.body;
 
-            commit.project_id = id;
-            commit.user_id = userId;
-            interface.addCommit(commit)
-                .then(function(result){ res.status(200).json({ status: "OK", data: result }); })
-                .catch(function(err){ res.status(500).json({error: "Internal server error: " + err}); });
-        }
-    });
+    //         commit.project_id = id;
+    //         commit.user_id = userId;
+    //         interface.addCommit(commit)
+    //             .then(function(result){ res.status(200).json({ status: "OK", data: result }); })
+    //             .catch(function(err){ res.status(500).json({error: "Internal server error: " + err}); });
+    //     }
+    // });
 
-    // for single commit remove
-    app.delete('/project/:pid/commit/:cid', loginRequired, function(req, res, next){
-        var userId = req.user;
-        var pid = req.params.pid;
-        var cid = req.params.cid;
-        if(!pid || isNaN(pid)) res.status(404);
-        else{
-            interface.removeCommit(pid, cid)
-                .then(function(result){ res.status(200).json({ status: "OK", data: result }); })
-                .catch(function(err){ res.status(500).json({error: "Internal server error: " + err}); });
-        }
-    });
+    // // for single commit remove
+    // app.delete('/project/:pid/commit/:cid', loginRequired, function(req, res, next){
+    //     var userId = req.user;
+    //     var pid = req.params.pid;
+    //     var cid = req.params.cid;
+    //     if(!pid || isNaN(pid)) res.status(404);
+    //     else{
+    //         interface.removeCommit(pid, cid)
+    //             .then(function(result){ res.status(200).json({ status: "OK", data: result }); })
+    //             .catch(function(err){ res.status(500).json({error: "Internal server error: " + err}); });
+    //     }
+    // });
 
-    // for batch commits
-    app.post('/project/:id/commits', loginRequired, function(req, res, next){
-        var userId = req.user;
-        var id = req.params.id;
-        if(!id || isNaN(id)) res.status(404);
-        else{
-            var items = req.body;
+    // // for batch commits
+    // app.post('/project/:id/commits', loginRequired, function(req, res, next){
+    //     var userId = req.user;
+    //     var id = req.params.id;
+    //     if(!id || isNaN(id)) res.status(404);
+    //     else{
+    //         var items = req.body;
 
-            Promise.all(
-                items.map(function(commit){
-                    commit.project_id = id;
-                    commit.user_id = userId;
-                    return interface.addCommit(commit);
-                })
-            )
-            .then(function(){ res.status(200).json({ status: "OK" }); })
-            .catch(function(err){ res.status(500).json({error: "Internal server error: " + err}); });
-        }
-    });
+    //         Promise.all(
+    //             items.map(function(commit){
+    //                 commit.project_id = id;
+    //                 commit.user_id = userId;
+    //                 return interface.addCommit(commit);
+    //             })
+    //         )
+    //         .then(function(){ res.status(200).json({ status: "OK" }); })
+    //         .catch(function(err){ res.status(500).json({error: "Internal server error: " + err}); });
+    //     }
+    // });
 
-    app.get('/projects', function (req, res, next) {
-        res.render(path.resolve(__dirname, '../', 'views/projectList.ejs'), { getUrl: '/projects/json' } ); 
-    });
+    // app.get('/projects', function (req, res, next) {
+    //     res.render(path.resolve(__dirname, '../', 'views/projectList.ejs'), { getUrl: '/projects/json' } ); 
+    // });
 
-    app.get('/projects/json', function (req, res, next) {
-        var idx = req.query.idx;
-        var len = req.query.len;
-        interface.getAllProjects(idx, len)
-            .then(
-                function(results){
-                    var userId = req.user;
-                    if(userId) {    // if login
-                        results.forEach(function(item){ 
-                            if(item.user_id == userId) item.appendUrl = "/project/" + item.id + "/precommit";
-                        });
-                    }
-                    res.status(200).json({ items: results });
-                },
-                function(err){ res.status(500).json({error: "Internal server error: " + err}); }
-            );
-    });
+    // app.get('/projects/json', function (req, res, next) {
+    //     var idx = req.query.idx;
+    //     var len = req.query.len;
+    //     interface.getAllProjects(idx, len)
+    //         .then(
+    //             function(results){
+    //                 var userId = req.user;
+    //                 if(userId) {    // if login
+    //                     results.forEach(function(item){ 
+    //                         if(item.user_id == userId) item.appendUrl = "/project/" + item.id + "/precommit";
+    //                     });
+    //                 }
+    //                 res.status(200).json({ items: results });
+    //             },
+    //             function(err){ res.status(500).json({error: "Internal server error: " + err}); }
+    //         );
+    // });
 
-    app.get('/user/projects', loginRequired, function (req, res, next) {
-        res.render(path.resolve(__dirname, '../', 'views/projectList.ejs'), { getUrl: '/user/projects/json' } ); 
-    });
+    // app.get('/user/projects', loginRequired, function (req, res, next) {
+    //     res.render(path.resolve(__dirname, '../', 'views/projectList.ejs'), { getUrl: '/user/projects/json' } ); 
+    // });
 
-    app.get('/user/projects/json', loginRequired, function (req, res, next) {
-        var idx = req.query.idx;
-        var len = req.query.len;
-        interface.getUserProjects(req.user, idx, len)
-            .then(
-                function(results){
-                    var userId = req.user;
-                    results.forEach(function(item){
-                        if(item.user_id == userId) item.appendUrl = "/project/" + item.id + "/precommit";
-                    });
-                    res.status(200).json({ items: results });
-                },
-                function(err){ res.status(500).json({error: "Internal server error: " + err}); }
-            );
-    });
-
-    if(isDev){
-        // =====================================
-        // TEST FIREBASE =======================
-        // =====================================
-        app.get('/testpush', loginRequired, function (req, res, next) {
-            req.session.project = 1;
-            res.render(path.resolve(__dirname, '../', 'views/testpush.ejs'),
-                {
-                    base64: utils.base64_encode( path.resolve(__dirname, '../../', 'client/images/flower.jpg') ),
-                    filename: "flower.jpg",
-                    type: "image/jpg"
-                }
-            );
-        });
-        app.post('/testpush/commit/add', loginRequired, function (req, res, next) {
-            var projectId = req.session.project || 1;
-            var userId = req.user;
-            var formbody = req.body;
-            var image = null;
-
-            if(formbody.filename){
-                image = {
-                    filename: formbody.filename,
-                    base64String: formbody.base64String,
-                    mediaType: formbody.mediaType
-                }
-            }
-
-            interface.addCommit({
-                project_id: projectId,
-                user_id: userId,
-                message: formbody.message,
-                components: JSON.stringify( [{ name: "hook", quantity: 2, point:[23, 25, 100, 200] }, { name: "hamer", quantity: 1, point:[66, 45, 150, 40] }] ),
-                machines: JSON.stringify(['shit','damn']),
-                repos: "https://github.com/FablabTaipei/FabDoc-RPi-client",
-                note: "this is a test",
-                image: image
-            }).then(function(result){
-                // console.log(result);
-                res.status(200).send("OK");
-            }, function(err){
-                res.status(500).json({error: "Internal server error: " + err});
-            });
-
-        });
-        app.post('/testpush/project/add', loginRequired, function(req, res, next){
-            var formbody = req.body;
-            var userId = req.user;
-
-            interface.addProject(formbody.name, userId, formbody.description, formbody.license)
-                .then(
-                    function(result){
-                        console.log(result);
-                        res.status(200).send("OK");
-                    },
-                    function(err){
-                        res.status(500).json({error: "Internal server error: " + err});
-                    }
-                );
-        });
-        app.get('/testpush/commits', loginRequired, function(req, res, next){
-
-            interface.getCommits(req.session.project || 1)
-                .then(
-                    function(result){
-                        res.status(200).json(result);
-                    },
-                    function(err){
-                        res.status(500).json({error: "Internal server error: " + err});
-                    }
-                );
-        });
-    }
-
-    // process the login form
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/', // redirect to the secure profile section
-        failureRedirect : '/login', // redirect back to the signup page if there is an error
-        failureFlash : false // allow flash messages
-    }));
-
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/', // redirect to the secure profile section
-        failureRedirect : '/signup', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
-
-    app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
-    });
+    // app.get('/user/projects/json', loginRequired, function (req, res, next) {
+    //     var idx = req.query.idx;
+    //     var len = req.query.len;
+    //     interface.getUserProjects(req.user, idx, len)
+    //         .then(
+    //             function(results){
+    //                 var userId = req.user;
+    //                 results.forEach(function(item){
+    //                     if(item.user_id == userId) item.appendUrl = "/project/" + item.id + "/precommit";
+    //                 });
+    //                 res.status(200).json({ items: results });
+    //             },
+    //             function(err){ res.status(500).json({error: "Internal server error: " + err}); }
+    //         );
+    // });
 
 };

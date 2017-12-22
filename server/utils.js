@@ -1,6 +1,6 @@
 
 var url = require('url');
-var md5 = require('md5');
+// var md5 = require('md5');
 var fs = require('fs');
 var uuid = require('node-uuid');
 var strkey = "_fd";
