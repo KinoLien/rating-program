@@ -43,7 +43,11 @@ module.exports = function(app) {
         if(isNaN(num) || num <= 0 || num > ratings.length){
             res.status(404);
         }else{
-            res.render(path.resolve(__dirname, '../', 'views/ratings.ejs'), { info: ratings[num - 1] });
+            res.render(path.resolve(__dirname, '../', 'views/ratings.ejs'), {
+                info: ratings[num - 1], 
+                idx: num - 1,
+                maxScore: constants.maxScore
+            });
         }
     });
 

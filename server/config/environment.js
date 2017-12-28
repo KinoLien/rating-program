@@ -1,5 +1,7 @@
 
-// var utils = require('../utils');
+var constants = require('./const');
+
+var utils = require('../utils');
 
 module.exports = {
 
@@ -10,6 +12,33 @@ module.exports = {
         io.on('connection', function (socket) {
             require('../controllers/socket.js')(socket,io);
         });
+
+        io.scoreManager = (function(rtc, ptpc, rdc, ms){
+            var data = {};
+            var outOfRange = function(val, bound){
+                return isNaN(val) || isNaN(bound) || val < 0 || val >= bound;
+            };
+            var rangeInvalid = function(ratingIdx, participantIdx, roundIdx){
+                return outOfRange(ratingIdx, rtc) || outOfRange(participantIdx, ptpc) || outOfRange(roundIdx, rdc);
+            };
+            return {
+                getScore: function(ratingIdx, participantIdx, roundIdx){
+                    if( rangeInvalid(ratingIdx, participantIdx, roundIdx) ) return -1;
+                    var key = [ratingIdx, participantIdx, roundIdx].join('-');
+                    if( isNaN(data[key]) ) return -1;
+                    return data[key];
+                },
+                setScore: function(ratingIdx, participantIdx, roundIdx, score){
+                    score = parseInt(score);
+                    if( rangeInvalid(ratingIdx, participantIdx, roundIdx) ) return;
+                    if( outOfRange(score, ms + 0.1) ) return;
+                    var key = [ratingIdx, participantIdx, roundIdx].join('-');
+                    data[key] = score;
+                },
+                reset: function(){ data = {}; },
+                hasData: function(){ return Object.keys(data).length > 0; }
+            };
+        })(constants.ratings.length, constants.participants.length, constants.rounds.length, constants.maxScore);
 
         return io;
     },
@@ -36,8 +65,31 @@ module.exports = {
             //     console.log("Fail");
             //     next(new Error("Server reject this connection with token: " + tokenRoom));
             // }
+            var rejectConnect = function(reason){
+                console.log("Fail");
+                socket.error(reason);
+                socket.disconnect();
+                next(new Error(reason));
+            };
 
-            next();
+            var validRoles = ["rating", "console", "view"];
+            var params = utils.getParamPairs(socket.request);
+            var currentRole = params["role"];
+
+            if( !currentRole || validRoles.indexOf(currentRole) == -1 ){
+                return rejectConnect("Server reject this connection with role: " + (currentRole || "undefined"));
+            }else{
+                if(currentRole == "rating"){
+                    var currentRatingIdx = parseInt(params["idx"]);
+                    if( isNaN(currentRatingIdx) || currentRatingIdx < 0 || 
+                        currentRatingIdx >= constants.ratings.length ){
+                        return rejectConnect("Server reject this connection with idx: " + currentRatingIdx);
+                    }
+                    socket.currentRatingIdx = currentRatingIdx;
+                }
+                socket.currentRole = currentRole;
+                next();
+            }
         });
     },
 }

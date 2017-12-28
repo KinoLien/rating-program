@@ -18,6 +18,8 @@ module.exports = {
 	rounds: [
 		{ name: "第一輪" },
 		{ name: "第二輪" }
-	]
-	
+	],
+
+	maxScore: 100
+
 }

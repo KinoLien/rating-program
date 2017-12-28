@@ -1,34 +1,34 @@
 
 var url = require('url');
 // var md5 = require('md5');
-var fs = require('fs');
-var uuid = require('node-uuid');
-var strkey = "_fd";
+// var fs = require('fs');
+// var uuid = require('node-uuid');
+// var strkey = "_fd";
 
-exports.getCookie = function(req){
-	var res = null,
-		cookiePairs = [];
+// exports.getCookie = function(req){
+// 	var res = null,
+// 		cookiePairs = [];
 
-	if(req && req.headers && req.headers.cookie)
-		cookiePairs = req.headers.cookie.split(';');
+// 	if(req && req.headers && req.headers.cookie)
+// 		cookiePairs = req.headers.cookie.split(';');
 
-	for(var idx = 0, len = cookiePairs.length; idx < len; idx++){
-		var cookie = cookiePairs[idx];
-		var parts = cookie.match(/(.*?)=(.*)$/);
-		if(parts[1].trim() == strkey){
-			res = (parts[2] || '').trim();
-			break;
-		}
-	}
-	return res;
-};
+// 	for(var idx = 0, len = cookiePairs.length; idx < len; idx++){
+// 		var cookie = cookiePairs[idx];
+// 		var parts = cookie.match(/(.*?)=(.*)$/);
+// 		if(parts[1].trim() == strkey){
+// 			res = (parts[2] || '').trim();
+// 			break;
+// 		}
+// 	}
+// 	return res;
+// };
 
-exports.setCookie = function(res, strValue, milliseconds){
-	res.cookie(strkey, strValue, {
-        maxAge: milliseconds,
-        httpOnly: true
-    });
-};
+// exports.setCookie = function(res, strValue, milliseconds){
+// 	res.cookie(strkey, strValue, {
+//         maxAge: milliseconds,
+//         httpOnly: true
+//     });
+// };
 
 exports.getParamPairs = function(req){
 	var requestUrl = url.parse(req.url),
@@ -46,14 +46,14 @@ exports.getParamPairs = function(req){
 	return params;
 };
 
-exports.getToken = function(){
-	return md5(uuid.v4());
-};
+// exports.getToken = function(){
+// 	return md5(uuid.v4());
+// };
 
-exports.base64_encode = function(file){
-	// read binary data
-    var bitmap = fs.readFileSync(file);
-    // convert binary data to base64 encoded string
-    return new Buffer(bitmap).toString('base64');
-};
+// exports.base64_encode = function(file){
+// 	// read binary data
+//     var bitmap = fs.readFileSync(file);
+//     // convert binary data to base64 encoded string
+//     return new Buffer(bitmap).toString('base64');
+// };
 

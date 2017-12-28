@@ -1,5 +1,5 @@
 
-// var socketInstance = io.connect('?ratingSerial=' + );
+var socketInstance = io.connect('?role=rating&idx=' + window.rtIdx);
 
 // socketInstance.on('connect', function(msg) {
 //     console.log("Browser Connected. ");
@@ -37,46 +37,110 @@ var app = new Vue({
     el: '#input-view',
 
     data: {
-    	participant_name: '',
-    	round_name: '',
+    	participantName: '',
+    	roundName: '',
     	inputRate: '',
     	currentMaskHeight: 0,
-    	loading: false
+    	loading: false,
+    	allRunDown: [],
+    	runDownIdx: -1,
+    	beginning: true,
+    	ending: false,
+    	canGoNext: false
     },
 
     methods: {
     	sendRate: function(){
+    		var self = this;
+    		self.loading = true;
+    		var runDown = self.allRunDown[self.runDownIdx];
+    		socketInstance.emit('rating_update_score', {
+    			participantIdx: runDown.participantIdx,
+    			roundIdx: runDown.roundIdx,
+    			score: self.currentRate || 0
+    		}, function(success){
+    			if(success){
+    				self.canGoNext = true;
+    				self.loading = false;
+    			}
+    		});
+    	},
+    	toNext: function(){
+    		var self = this;
 
+    		self.runDownIdx++;
+    		self.inputRate = '';
+
+    		self.canGoNext = false;
     	},
     	toBegin: function(){
-    		this.participant_name = 'test';
-    		this.round_name = 'test';
+    		if(this.beginning) this.beginning = false;
     	}
     },
 
     computed: {
     	currentRate: function(){
     		var newVal = this.inputRate;
-    		if(isNaN(newVal) || newVal < 0) newVal = 0;
-            if(newVal > 100) newVal = 100;
+    		if(newVal.toString().length == 0) return '';
+    		newVal = parseInt(newVal);
+    		if(newVal < 0) newVal = 0;
+            if(newVal > window.rtMaxScore) newVal = window.rtMaxScore;
             return newVal;	
     	},
     	running: function(){
-    		return this.participant_name && this.round_name;
+    		return !this.beginning && !this.ending;
+    	},
+    	nextText: function(){
+    		var self = this;
+    		var allLen = self.allRunDown.length;
+    		if(self.runDownIdx + 1 < allLen){
+    			var runDown = self.allRunDown[self.runDownIdx + 1];
+    			return runDown.roundInfo.name + runDown.participantInfo.name;
+    		}else{
+    			return "評分結束";
+    		}
     	}
     },
 
     watch:{
     	loading: function(){
     		this.currentMaskHeight = this.$el.offsetHeight;
+    	},
+    	runDownIdx: function(val){
+    		var self = this;
+    		var allLen = self.allRunDown.length;
+    		if(val != -1 && val < allLen){
+    			var runDown = self.allRunDown[val];
+    			self.roundName = runDown.roundInfo.name;
+    			self.participantName = runDown.participantInfo.name;
+    		}else if(val >= allLen){
+    			self.ending = true;
+    		}
     	}
     },
 
     mounted: function(){
-        // to get width/height for loading wrap after rendered.
-        // var main = this.$el;
-        // var load = this.$refs.loadwrap;
-        // $(load).height( main.offsetHeight );
+        var self = this;
+		self.loading = true;
+
+		socketInstance.emit('rating_get_allinfos', {}, function(data){
+			// data.participants
+			// data.rounds
+			var runDown = [];
+			data.rounds.forEach(function(roundInfo, ridx){
+				data.participants.forEach(function(participantInfo, pidx){
+					runDown.push({
+						roundInfo: roundInfo,
+						roundIdx: ridx,
+						participantInfo: participantInfo,
+						participantIdx: pidx
+					});
+				});
+			});
+			self.allRunDown = runDown;
+			self.toNext();
+			self.loading = false;
+		});
     }
 
 });
