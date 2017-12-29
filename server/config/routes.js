@@ -37,6 +37,13 @@ module.exports = function(app) {
     // =====================================
     // CONSOLE =============================
     // =====================================
+    app.get('/console', function (req, res, next) {
+        res.render(path.resolve(__dirname, '../', 'views/console.ejs'), {});
+    });
+
+    // =====================================
+    // RATINGS =============================
+    // =====================================
     app.get('/ratings/:number', function (req, res, next) {
         var num = req.params.number;
         var ratings = constants.ratings;

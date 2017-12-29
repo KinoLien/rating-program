@@ -4,12 +4,55 @@
 <head>
     <% include partials/head %>
 
+    <title>後台 Dashboard</title>
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="/css/console.css">
 </head>
 
 <body>
 
+    <h2>《青春最強音》後台Dashboard</h2>
+    <hr>
+    
+    <div class="container" id="dashboard-view">
+        <div class="row">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td v-for="rt in ratings"><h4>{{ rt.name }}</h4></td>
+                        <td><h4>小計</h4></td>
+                    </tr>
+                    <template v-for="(rd, ridx) in rounds">
+                    <tr v-for="(ptcp, pidx) in participants">
+                        <td v-if="pidx == 0" rowspan="3"><h3>{{ rd.name }}</h3></td>
+                        <td><h4>{{ ptcp.name }}</h4></td>
+
+                        <td v-for="score in scores[ridx][pidx]"><h4>{{ score }}</h4></td>
+
+                        <td><h4>{{ average(scores[ridx][pidx]) }}</h4></td>
+                    </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-8 col-md-4">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td colspan="1"></td>
+                            <td><h4>總分</h4></td>
+                        </tr>
+                        <tr v-for="(ptcp, pidx) in participants">
+                            <td><h4>{{ ptcp.name }}</h4></td>
+                            <td><h4>{{ allAverageByPart(pidx) }}</h4></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript" src="/js/console.js"></script>
 </body>
 

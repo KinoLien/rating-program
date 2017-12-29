@@ -107,6 +107,14 @@ module.exports = function (socket, io) {
         });
     });
 
+    socket.on('console_get_allinfos', function(data, callbackFn){
+        callbackFn({
+            participants: constants.participants,
+            rounds: constants.rounds,
+            ratings: constants.ratings
+        });
+    });
+
     socket.on('disconnect', function (message) {
         if(currentRole == "rating"){
             socket.to("console").emit('disconnected_with_rating', { idx: socket.currentRatingIdx, info: constants.ratings[socket.currentRatingIdx] });

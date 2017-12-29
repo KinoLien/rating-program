@@ -1,1 +1,61 @@
 
+var socketInstance = io.connect('?role=console');
+
+var app = new Vue({
+	el: '#dashboard-view',
+	data:{
+		participants: [],
+		rounds: [],
+		ratings: [],
+		scores: {}
+	},
+	methods: {
+		average: function(scores){
+			var allKeys = Object.keys(scores);
+			var rawSum = this.sum(scores);
+			return parseFloat( ( rawSum / allKeys.length ).toFixed(2) );
+		},
+		sum: function(scores){
+			return Object.keys(scores).map(function(k){ return scores[k]; }).reduce(function(a,b){ return a+b; });
+		},
+		allAverageByPart: function(pidx){
+			var self = this;
+			var allScores = self.scores;
+			// r => p => rating
+			var rawSum = 0;
+			for(var ridx in allScores){
+				for(var ptcpidx in allScores[ridx]){
+					if(ptcpidx == pidx){
+						rawSum += self.sum(allScores[ridx][ptcpidx]);
+					}
+				}
+			}
+			return parseFloat( (rawSum / (self.rounds.length * self.ratings.length)).toFixed(2) );
+		}
+	},
+	computed: {},
+	watch: {},
+	mounted: function(){
+		var self = this;
+
+		socketInstance.emit('console_get_allinfos', {}, function(data){
+
+			var initScore = {};
+
+			data.rounds.forEach(function(rd, rdidx){ // round
+				if(!initScore[rdidx]) initScore[rdidx] = {}; 
+				data.participants.forEach(function(pt, ptidx){ // participant
+					if(!initScore[rdidx][ptidx]) initScore[rdidx][ptidx] = {};
+					data.ratings.forEach(function(rt, rtidx){ // rating : score
+						initScore[rdidx][ptidx][rtidx] = 0;
+					});
+				});
+			});
+
+			self.scores = initScore;
+			self.participants = data.participants;
+			self.rounds = data.rounds;
+			self.ratings = data.ratings;
+		});
+	}
+});
