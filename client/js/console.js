@@ -59,3 +59,29 @@ var app = new Vue({
 		});
 	}
 });
+
+// =====================================
+// Socket Handlers =====================
+// =====================================
+socketInstance.on('connected_with_rating', function(data){
+	var idx = parseInt(data.idx);
+	app.$set(app.ratings, idx, Object.assign({}, app.ratings[idx], {online: true} ));
+});
+
+socketInstance.on('disconnected_with_rating', function(data){
+	var idx = parseInt(data.idx);
+	app.$set(app.ratings, idx, Object.assign({}, app.ratings[idx], {online: false} ));
+});
+
+socketInstance.on('update_score_from_rating', function(data) {
+	var rtidx = data.ratingIdx.toString(),
+		ptidx = data.participantIdx.toString(),
+		rdidx = data.roundIdx.toString(),
+		score = parseInt(data.score);
+	
+	// round, participant, rating : score
+	app.$data.scores[rdidx][ptidx][rtidx] = score;
+});
+
+
+

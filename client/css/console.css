@@ -13,3 +13,11 @@
     width: 100%;
     text-align: center;
 }
+
+h4.rating-name{
+	color: red;
+}
+
+h4.online{
+	color: green !important;
+}

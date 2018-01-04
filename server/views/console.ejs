@@ -20,7 +20,7 @@
                 <tbody>
                     <tr>
                         <td colspan="2"></td>
-                        <td v-for="rt in ratings"><h4>{{ rt.name }}</h4></td>
+                        <td v-for="rt in ratings"><h4 class="rating-name" v-bind:class="{ 'online' : rt.online }">{{ rt.name }}</h4></td>
                         <td><h4>小計</h4></td>
                     </tr>
                     <template v-for="(rd, ridx) in rounds">
