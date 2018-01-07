@@ -1,15 +1,6 @@
 
-// http://stackoverflow.com/questions/18831362/how-to-share-a-simple-image-on-facebook-with-callback
-
-// var service = require('../services/service');
-
-// var webshot = require('webshot');
-
 var constants = require('../config/const');
 
-// var path = require('path');
-
-// var isDev = process.env.NODE_ENV === 'development';
 var getRatingRoom = function(idx){
     return "rating" + idx;
 }
@@ -29,13 +20,6 @@ module.exports = function (socket, io) {
         socket.to("console").emit('connected_with_rating', { idx: socket.currentRatingIdx, info: constants.ratings[socket.currentRatingIdx] });
     }
 
-    if(io.scoreManager.hasData() && ["rating","console"].indexOf(currentRole) != -1){
-        // do reload scores
-        var currentData = {};
-        //
-        socket.to( getRoomByRole(currentRole) ).emit('reload_data', currentData);
-    }
-    
     socket.on('rating_update_score', function(data, callbackFn) {
         if(typeof socket.currentRatingIdx == 'undefined'){
             callbackFn(false); return;
@@ -45,9 +29,6 @@ module.exports = function (socket, io) {
         data.ratingIdx = socket.currentRatingIdx;
 
         socket.to("console").emit('update_score_from_rating', data);
-
-        // console.log(data);
-        // console.log(io.scoreManager.getScore(socket.currentRatingIdx, data.participantIdx, data.roundIdx));
 
         callbackFn(true);
     });
