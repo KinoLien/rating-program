@@ -37,9 +37,20 @@ module.exports = function (socket, io) {
         if(typeof socket.currentRatingIdx == 'undefined'){
             callbackFn(false); return;
         }
+
+        var rtidx = socket.currentRatingIdx;
+        var reloadScores = {};
+        constants.rounds.forEach(function(rd, rdidx){
+            if(!reloadScores[rdidx]) reloadScores[rdidx] = {};
+            constants.participants.forEach(function(pt, ptidx){
+                reloadScores[rdidx][ptidx] = io.scoreManager.getScore(rtidx, ptidx, rdidx);
+            });
+        });
+
         callbackFn({
             participants: constants.participants,
-            rounds: constants.rounds
+            rounds: constants.rounds,
+            reloadScores: reloadScores
         });
     });
 
@@ -58,9 +69,7 @@ module.exports = function (socket, io) {
             constants.participants.forEach(function(pt, ptidx){
                 if(!reloadScores[rdidx][ptidx]) reloadScores[rdidx][ptidx] = {};
                 constants.ratings.forEach(function(rt, rtidx){
-                    var score = io.scoreManager.getScore(rtidx, ptidx, rdidx);
-                    if(score == -1) score = 0;
-                    reloadScores[rdidx][ptidx][rtidx] = score;
+                    reloadScores[rdidx][ptidx][rtidx] = io.scoreManager.getScore(rtidx, ptidx, rdidx) || 0;
                 });
             });
         });

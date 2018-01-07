@@ -23,9 +23,9 @@ module.exports = {
             };
             return {
                 getScore: function(ratingIdx, participantIdx, roundIdx){
-                    if( rangeInvalid(ratingIdx, participantIdx, roundIdx) ) return -1;
+                    if( rangeInvalid(ratingIdx, participantIdx, roundIdx) ) return null;
                     var key = [ratingIdx, participantIdx, roundIdx].join('-');
-                    if( isNaN(data[key]) ) return -1;
+                    if( isNaN(data[key]) ) return null;
                     return data[key];
                 },
                 setScore: function(ratingIdx, participantIdx, roundIdx, score){

@@ -65,13 +65,19 @@ var app = new Vue({
     			}
     		});
     	},
-    	toNext: function(){
+    	toNext: function(jumpTo){
     		var self = this;
 
-    		self.runDownIdx++;
-    		self.inputRate = '';
-
-    		self.canGoNext = false;
+    		if(isNaN(jumpTo)){
+	    		self.runDownIdx++;
+	    		self.inputRate = '';
+	    		self.canGoNext = false;
+    		}else{
+    			self.runDownIdx = jumpTo;
+				self.inputRate = self.allRunDown[jumpTo].currentScore;
+				self.canGoNext = true;
+				self.toBegin();
+    		}
     	},
     	toBegin: function(){
     		if(this.beginning) this.beginning = false;
@@ -127,18 +133,29 @@ var app = new Vue({
 			// data.participants
 			// data.rounds
 			var runDown = [];
+			var reloadScores = data.reloadScores;
+			var jumpTo;
+
 			data.rounds.forEach(function(roundInfo, ridx){
 				data.participants.forEach(function(participantInfo, pidx){
-					runDown.push({
+					var currentScore = reloadScores[ridx][pidx];
+					var runObj = {
 						roundInfo: roundInfo,
 						roundIdx: ridx,
 						participantInfo: participantInfo,
 						participantIdx: pidx
-					});
+					};
+
+					if(currentScore){
+						runObj.currentScore = currentScore;
+						jumpTo = runDown.length;
+					}
+
+					runDown.push(runObj);
 				});
 			});
 			self.allRunDown = runDown;
-			self.toNext();
+			self.toNext(jumpTo);
 			self.loading = false;
 		});
     }
