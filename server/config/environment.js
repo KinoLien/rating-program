@@ -40,6 +40,11 @@ module.exports = {
             };
         })(constants.ratings.length, constants.participants.length, constants.rounds.length, constants.maxScore);
 
+        io.hasSocketInRoom = function(roomName){
+            var room = this.sockets.adapter.rooms[ roomName ];
+            return !!room && room.length > 0;
+        };
+
         return io;
     },
 

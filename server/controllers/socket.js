@@ -10,13 +10,17 @@ var constants = require('../config/const');
 // var path = require('path');
 
 // var isDev = process.env.NODE_ENV === 'development';
+var getRatingRoom = function(idx){
+    return "rating" + idx;
+}
 
 module.exports = function (socket, io) {
 
     var currentRole = socket.currentRole;
 
     var getRoomByRole = function(role){
-        return role + ( (typeof socket.currentRatingIdx == 'undefined')? "" : socket.currentRatingIdx );
+        if(typeof socket.currentRatingIdx == 'undefined') return role;
+        return getRatingRoom(socket.currentRatingIdx);
     };
 
     socket.join( getRoomByRole(currentRole) );
@@ -59,19 +63,22 @@ module.exports = function (socket, io) {
     });
 
     socket.on('console_get_allinfos', function(data, callbackFn){
+
+        var ratings = constants.ratings.map(function(item, idx){
+            item.online = io.hasSocketInRoom(getRatingRoom(idx));
+            return item;
+        });
+
         callbackFn({
             participants: constants.participants,
             rounds: constants.rounds,
-            ratings: constants.ratings
+            ratings: ratings,
         });
     });
 
     socket.on('disconnect', function (message) {
-        if(currentRole == "rating"){
-            var room = io.sockets.adapter.rooms[ getRoomByRole(currentRole) ];
-            if(!room || room.length < 1){
-                socket.to("console").emit('disconnected_with_rating', { idx: socket.currentRatingIdx, info: constants.ratings[socket.currentRatingIdx] });
-            }
+        if(currentRole == "rating" && !io.hasSocketInRoom(getRoomByRole(currentRole)) ){
+            socket.to("console").emit('disconnected_with_rating', { idx: socket.currentRatingIdx, info: constants.ratings[socket.currentRatingIdx] });
         }
     });
 
