@@ -30,7 +30,7 @@
 
                         <td v-for="score in scores[ridx][pidx]"><h4>{{ score }}</h4></td>
 
-                        <td><h4>{{ average(scores[ridx][pidx]) }}</h4></td>
+                        <td><h4>{{ sum(scores[ridx][pidx]) }}</h4></td>
                     </tr>
                     </template>
                 </tbody>
@@ -46,7 +46,7 @@
                         </tr>
                         <tr v-for="(ptcp, pidx) in participants">
                             <td><h4>{{ ptcp.name }}</h4></td>
-                            <td><h4>{{ allAverageByPart(pidx) }}</h4></td>
+                            <td><h4>{{ sumByPart(pidx) }}</h4></td>
                         </tr>
                     </tbody>
                 </table>

@@ -10,15 +10,15 @@ var app = new Vue({
 		scores: {}
 	},
 	methods: {
-		average: function(scores){
-			var allKeys = Object.keys(scores);
-			var rawSum = this.sum(scores);
-			return parseFloat( ( rawSum / allKeys.length ).toFixed(2) );
-		},
+		// average: function(scores){
+		// 	var allKeys = Object.keys(scores);
+		// 	var rawSum = this.sum(scores);
+		// 	return parseFloat( ( rawSum / allKeys.length ).toFixed(2) );
+		// },
 		sum: function(scores){
 			return Object.keys(scores).map(function(k){ return scores[k]; }).reduce(function(a,b){ return a+b; });
 		},
-		allAverageByPart: function(pidx){
+		sumByPart: function(pidx){
 			var self = this;
 			var allScores = self.scores;
 			// r => p => rating
@@ -30,7 +30,8 @@ var app = new Vue({
 					}
 				}
 			}
-			return parseFloat( (rawSum / (self.rounds.length * self.ratings.length)).toFixed(2) );
+			// return parseFloat( (rawSum / (self.rounds.length * self.ratings.length)).toFixed(2) );
+			return rawSum;
 		}
 	},
 	computed: {},
