@@ -1,0 +1,71 @@
+@charset "utf-8";
+/* CSS Document */
+body, h1, h2, h3, h4, h5, h6, p { font-family: 'Bitter',"微軟正黑體","Microsoft JhengHei", serif; -webkit-font-smoothing: antialiased;}
+a{ text-decoration:none; outline: none; /* for Firefox */  hlbr:expression(this.onFocus=this.blur()); /* for IE */}
+a:hover{ text-decoration:none;}
+select, input, textarea{ font-family:"微軟正黑體","Microsoft JhengHei", serif; -webkit-font-smoothing: antialiased; font-size:15px;}
+*:link, *:visited, *:hover, *:active, *:focus , * { -o-transition: color .20s linear, background-color .20s linear, border-color .20s linear; -webkit-transition: color .20s linear, background-color .20s linear, border-color .20s linear; -moz-transition: color .20s linear, background-color .20s linear, border-color .20s linear; transition: color .20s linear, background-color .20s linear, border-color .20s linear; }
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video { margin:0; padding:0; border:0; outline:0; font-size:100%; vertical-align:baseline;}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section { display:block;}
+blockquote, q { quotes:none;}
+blockquote:before, blockquote:after, q:before, q:after { content:''; content:none;}
+* {-webkit-text-size-adjust:none;}
+a{text-decoration:none;}
+fieldset, img {border:0;}
+ol, ul {list-style:none;}
+abbr, acronym {border:0;}
+.CLEAR{clear:both; height: 0; font-size: 0px; line-height: 0;}
+.clearfix:after {  content: ".";  display: block;  height: 0;  clear: both;  visibility: hidden;}
+* html .clearfix { height: 1%;}
+*:first-child + html .clearfix  {min-height: 1%;}
+
+
+/* open-sans-regular - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans Regular'), local('OpenSans-Regular'),
+       url('../fonts/open-sans-v15-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/open-sans-v15-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* open-sans-700italic - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'),
+       url('../fonts/open-sans-v15-latin-700italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/open-sans-v15-latin-700italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* open-sans-800italic - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 800;
+  src: local('Open Sans ExtraBold Italic'), local('OpenSans-ExtraBoldItalic'),
+       url('../fonts/open-sans-v15-latin-800italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/open-sans-v15-latin-800italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* -- go -- */
+
+.scoreBox{ width: 100vw; height: 100vw; display: block; border-radius: 50%;/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f14fdb+0,935be6+27,0f6cf5+50,095ecd+71,213343+100 */
+background: #f14fdb; /* Old browsers */
+background: -moz-linear-gradient(45deg, #f14fdb 0%, #935be6 27%, #0f6cf5 50%, #095ecd 71%, #213343 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(45deg, #f14fdb 0%,#935be6 27%,#0f6cf5 50%,#095ecd 71%,#213343 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(45deg, #f14fdb 0%,#935be6 27%,#0f6cf5 50%,#095ecd 71%,#213343 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f14fdb', endColorstr='#213343',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center;}
+
+.scoreBox p{font-family: 'Open Sans',"微軟正黑體", sans-serif; font-size: 48vw; line-height: 45vw; font-weight: 800; width: 100%; text-align: center; font-style: italic; color: #fff; text-shadow: 0vw 0vw 5vw rgba(0, 0, 0,.3), 0vw 5vw 8vw rgba(0, 0, 0,.5);}
+.scoreBox p.school_name{ font-size: 8vw; width: 100%; margin: 0 auto; display:block; font-style: normal; line-height: 12vw; text-shadow: 0vw 0vw 3vw rgba(0, 0, 0,.6), 0vw 2vw 4vw rgba(0, 0, 0,.5);}
+.scoreBox ul{ width: 84vw; height: 84vw;}
+.scoreBox ul li{float: left; width: 42vw; height: 42vw; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center}
+.scoreBox ul li p{ font-size: 24vw; line-height: 24vw; }
+
+.grid_4{ position: relative;}
+.grid_4::after{ content: ""; position: absolute; width: 2vw; height: 100vw; left: 50%; top: 0; margin-left: -1vw; display: block; background-color: #4ae4d8; }
+.grid_4::before{ content: ""; position: absolute; height: 2vw; width: 100vw; top: 50%; left: 0; margin-top: -1vw; display: block; background-color: #4ae4d8; }
+/*.grid_4 p.school_name{ font-size: 4.5vw; display:block;font-style: normal; line-height: 5.5vw; text-shadow: 0vw 0vw 3vw rgba(0, 0, 0,.6), 0vw 2vw 4vw rgba(0, 0, 0,.5);}
+*/

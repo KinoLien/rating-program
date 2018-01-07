@@ -58,7 +58,7 @@ module.exports = {
                 next(new Error(reason));
             };
 
-            var validRoles = ["rating", "console", "view"];
+            var validRoles = ["rating", "console", "scoreview"];
             var params = utils.getParamPairs(socket.request);
             var currentRole = params["role"];
 

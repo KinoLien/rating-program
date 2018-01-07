@@ -17,6 +17,13 @@ module.exports = function(app) {
     });
 
     // =====================================
+    // SCORE VIEW ==========================
+    // =====================================
+    app.get('/scoreview', function (req, res, next) {
+        res.render(path.resolve(__dirname, '../', 'views/scoreview.ejs'), {});
+    });
+
+    // =====================================
     // RATINGS =============================
     // =====================================
     app.get('/ratings/:number', function (req, res, next) {
@@ -32,5 +39,7 @@ module.exports = function(app) {
             });
         }
     });
+
+
 
 };
