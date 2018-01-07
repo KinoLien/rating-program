@@ -69,10 +69,26 @@ module.exports = function (socket, io) {
             return item;
         });
 
+        var reloadScores = {};
+
+        // round, part, rating maps.
+        constants.rounds.forEach(function(rd, rdidx){
+            if(!reloadScores[rdidx]) reloadScores[rdidx] = {};
+            constants.participants.forEach(function(pt, ptidx){
+                if(!reloadScores[rdidx][ptidx]) reloadScores[rdidx][ptidx] = {};
+                constants.ratings.forEach(function(rt, rtidx){
+                    var score = io.scoreManager.getScore(rtidx, ptidx, rdidx);
+                    if(score == -1) score = 0;
+                    reloadScores[rdidx][ptidx][rtidx] = score;
+                });
+            });
+        });
+        
         callbackFn({
             participants: constants.participants,
             rounds: constants.rounds,
             ratings: ratings,
+            reloadScores: reloadScores
         });
     });
 

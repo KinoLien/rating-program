@@ -42,13 +42,14 @@ var app = new Vue({
 		socketInstance.emit('console_get_allinfos', {}, function(data){
 
 			var initScore = {};
+			var reloadScores = data.reloadScores;
 
 			data.rounds.forEach(function(rd, rdidx){ // round
 				if(!initScore[rdidx]) initScore[rdidx] = {}; 
 				data.participants.forEach(function(pt, ptidx){ // participant
 					if(!initScore[rdidx][ptidx]) initScore[rdidx][ptidx] = {};
 					data.ratings.forEach(function(rt, rtidx){ // rating : score
-						initScore[rdidx][ptidx][rtidx] = 0;
+						initScore[rdidx][ptidx][rtidx] = reloadScores[rdidx][ptidx][rtidx];
 					});
 				});
 			});
