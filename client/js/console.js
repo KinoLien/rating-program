@@ -32,6 +32,18 @@ var app = new Vue({
 			}
 			// return parseFloat( (rawSum / (self.rounds.length * self.ratings.length)).toFixed(2) );
 			return rawSum;
+		},
+		showScore: function(score){
+			// event: scoreview_show_score
+			socketInstance.emit('scoreview_show_score', { score: score });
+		},
+		showSplitScore: function(rdidx, ptidx){
+			// event: scoreview_show_split_score
+			socketInstance.emit('scoreview_show_split_score', { rdidx: rdidx, ptidx: ptidx });
+		},
+		showScoreWithPart: function(ptidx, score){
+			// event: scoreview_show_score_with_part
+			socketInstance.emit('scoreview_show_score_with_part', { score: score, ptidx: ptidx });
 		}
 	},
 	computed: {},

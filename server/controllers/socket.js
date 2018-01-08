@@ -82,6 +82,32 @@ module.exports = function (socket, io) {
         });
     });
 
+    socket.on('scoreview_show_score', function(data){
+        socket.to("scoreview").emit('show_score_from_console', data);
+        // console.log(data);
+    });
+
+    socket.on('scoreview_show_split_score', function(data){
+        var rdidx = data.rdidx,
+            ptidx = data.ptidx,
+            scores = [];
+
+        constants.ratings.map(function(rt, rtidx){
+            scores.push(io.scoreManager.getScore(rtidx, ptidx, rdidx) || 0);
+        });
+
+        socket.to("scoreview").emit('show_split_score_from_console', { scores: scores });
+        // console.log({ scores: scores });
+    });
+
+    socket.on('scoreview_show_score_with_part', function(data){
+        var ptidx = data.ptidx,
+            score = data.score,
+            info = constants.participants[ptidx];
+        socket.to("scoreview").emit('show_score_with_part_from_console', { score: score, name: info.name });
+        // console.log({ score: score, name: info.name });
+    });
+
     socket.on('disconnect', function (message) {
         if(currentRole == "rating" && !io.hasSocketInRoom(getRoomByRole(currentRole)) ){
             socket.to("console").emit('disconnected_with_rating', { idx: socket.currentRatingIdx, info: constants.ratings[socket.currentRatingIdx] });

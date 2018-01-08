@@ -30,7 +30,11 @@
 
                         <td v-for="score in scores[ridx][pidx]"><h4>{{ score }}</h4></td>
 
-                        <td><h4>{{ sum(scores[ridx][pidx]) }}</h4></td>
+                        <td>
+                            <h4>{{ sum(scores[ridx][pidx]) }}</h4>
+                            <button class="btn btn-success" type="button" @click="showSplitScore(ridx,pidx)">顯示四格</button>
+                            <button class="btn btn-success" type="button" @click="showScore(sum(scores[ridx][pidx]))">顯示小計</button>
+                        </td>
                     </tr>
                     </template>
                 </tbody>
@@ -46,7 +50,10 @@
                         </tr>
                         <tr v-for="(ptcp, pidx) in participants">
                             <td><h4>{{ ptcp.name }}</h4></td>
-                            <td><h4>{{ sumByPart(pidx) }}</h4></td>
+                            <td>
+                                <h4>{{ sumByPart(pidx) }}</h4>
+                                <button class="btn btn-success" type="button" @click="showScoreWithPart(pidx,sumByPart(pidx))">顯示名稱與總分</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
