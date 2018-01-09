@@ -5,7 +5,6 @@
     <meta name="MobileOptimized" content="width">
 	<meta name="HandheldFriendly" content="true">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700i,800i" rel="stylesheet">
     
     <title>分數顯示</title>
 
@@ -17,31 +16,21 @@
 </head>
 
 <body>
+	<div id="score-view">
+		<content class="scoreBox" v-bind:class="{ 'grid_4' : multiScores }"> 
+			<!-- 單一數字 -->
+			<!-- 單一數字 + 學校名稱 -->
+			<div v-if="onlyScore || scoreWithName">
+				<p v-if="scoreWithName" class="school_name">{{ remoteData.name }}</p>
+				<p>{{ remoteData.score }}</p>
+			</div>
+			<!-- 4格 單一數字 -->
+			<ul v-if="multiScores" class="clearfix">
+				<li v-for="score in remoteData.scores"><p>{{ score }}</p></li>
+			</ul>
+		</content>	
+	</div>
 
-<!-- 單一數字 -->
-<content class="scoreBox"> 
-  <div>
-    <p>20</p>
-  </div>
-</content>
-
-<!-- 單一數字 + 學校名稱 -->
-<content class="scoreBox">
-  <div>
-    <p class="school_name">銘傳附幼</p>
-    <p>18</p>
-  </div>
-</content>
-
-<!-- 4格 單一數字 -->
-<content class="scoreBox grid_4">
-  <ul class="clearfix">
-    <li><p>20</p></li>
-    <li><p>10</p></li>
-    <li><p>90</p></li>
-    <li><p>18</p></li>
-  </ul>
-</content>
-
+	<script type="text/javascript" src="/js/scoreview.js"></script>
 </body>
 </html>

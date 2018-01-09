@@ -19,7 +19,9 @@ abbr, acronym {border:0;}
 * html .clearfix { height: 1%;}
 *:first-child + html .clearfix  {min-height: 1%;}
 
-
+body{
+	background-color: black;
+}
 /* open-sans-regular - latin */
 @font-face {
   font-family: 'Open Sans';
@@ -50,7 +52,7 @@ abbr, acronym {border:0;}
 
 /* -- go -- */
 
-.scoreBox{ width: 100vw; height: 100vw; display: block; border-radius: 50%;/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f14fdb+0,935be6+27,0f6cf5+50,095ecd+71,213343+100 */
+.scoreBox{ width: 100vh; height: 100vh; display: block; border-radius: 50%;/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f14fdb+0,935be6+27,0f6cf5+50,095ecd+71,213343+100 */
 background: #f14fdb; /* Old browsers */
 background: -moz-linear-gradient(45deg, #f14fdb 0%, #935be6 27%, #0f6cf5 50%, #095ecd 71%, #213343 100%); /* FF3.6-15 */
 background: -webkit-linear-gradient(45deg, #f14fdb 0%,#935be6 27%,#0f6cf5 50%,#095ecd 71%,#213343 100%); /* Chrome10-25,Safari5.1-6 */
@@ -58,14 +60,14 @@ background: linear-gradient(45deg, #f14fdb 0%,#935be6 27%,#0f6cf5 50%,#095ecd 71
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f14fdb', endColorstr='#213343',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center;}
 
-.scoreBox p{font-family: 'Open Sans',"微軟正黑體", sans-serif; font-size: 48vw; line-height: 45vw; font-weight: 800; width: 100%; text-align: center; font-style: italic; color: #fff; text-shadow: 0vw 0vw 5vw rgba(0, 0, 0,.3), 0vw 5vw 8vw rgba(0, 0, 0,.5);}
-.scoreBox p.school_name{ font-size: 8vw; width: 100%; margin: 0 auto; display:block; font-style: normal; line-height: 12vw; text-shadow: 0vw 0vw 3vw rgba(0, 0, 0,.6), 0vw 2vw 4vw rgba(0, 0, 0,.5);}
-.scoreBox ul{ width: 84vw; height: 84vw;}
-.scoreBox ul li{float: left; width: 42vw; height: 42vw; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center}
-.scoreBox ul li p{ font-size: 24vw; line-height: 24vw; }
+.scoreBox p{font-family: 'Open Sans',"微軟正黑體", sans-serif; font-size: 45vh; line-height: 45vh; font-weight: 800; width: 100%; text-align: center; font-style: italic; color: #fff; text-shadow: 0vh 0vh 5vh rgba(0, 0, 0,.3), 0vh 5vh 8vh rgba(0, 0, 0,.5);}
+.scoreBox p.school_name{ font-size: 8vh; width: 100%; margin: 0 auto; display:block; font-style: normal; line-height: 12vh; text-shadow: 0vh 0vh 3vh rgba(0, 0, 0,.6), 0vh 2vh 4vh rgba(0, 0, 0,.5);}
+.scoreBox ul{ width: 84vh; height: 84vh;}
+.scoreBox ul li{float: left; width: 42vh; height: 42vh; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center}
+.scoreBox ul li p{ font-size: 24vh; line-height: 24vh; }
 
 .grid_4{ position: relative;}
-.grid_4::after{ content: ""; position: absolute; width: 2vw; height: 100vw; left: 50%; top: 0; margin-left: -1vw; display: block; background-color: #4ae4d8; }
-.grid_4::before{ content: ""; position: absolute; height: 2vw; width: 100vw; top: 50%; left: 0; margin-top: -1vw; display: block; background-color: #4ae4d8; }
-/*.grid_4 p.school_name{ font-size: 4.5vw; display:block;font-style: normal; line-height: 5.5vw; text-shadow: 0vw 0vw 3vw rgba(0, 0, 0,.6), 0vw 2vw 4vw rgba(0, 0, 0,.5);}
+.grid_4::after{ content: ""; position: absolute; width: 2vh; height: 100vh; left: 50%; top: 0; margin-left: -1vh; display: block; background-color: #4ae4d8; }
+.grid_4::before{ content: ""; position: absolute; height: 2vh; width: 100vh; top: 50%; left: 0; margin-top: -1vh; display: block; background-color: #4ae4d8; }
+/*.grid_4 p.school_name{ font-size: 4.5vh; display:block;font-style: normal; line-height: 5.5vh; text-shadow: 0vh 0vh 3vh rgba(0, 0, 0,.6), 0vh 2vh 4vh rgba(0, 0, 0,.5);}
 */
