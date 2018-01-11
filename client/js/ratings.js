@@ -18,6 +18,12 @@ var app = new Vue({
     },
 
     methods: {
+        doAutoFocus: function(){
+            var self = this;
+            self.$nextTick(function(){
+                if(self.$refs.scoreRef) self.$refs.scoreRef.focus();
+            });
+        },
     	sendRate: function(){
     		var self = this;
     		self.loading = true;
@@ -40,6 +46,7 @@ var app = new Vue({
 	    		self.runDownIdx++;
 	    		self.inputRate = '';
 	    		self.canGoNext = false;
+                self.doAutoFocus();
     		}else{
     			self.runDownIdx = jumpTo;
 				self.inputRate = self.allRunDown[jumpTo].currentScore;
@@ -48,7 +55,11 @@ var app = new Vue({
     		}
     	},
     	toBegin: function(){
-    		if(this.beginning) this.beginning = false;
+            var self = this;
+            if(self.beginning) {
+                self.beginning = false;
+                self.doAutoFocus();
+            }
     	}
     },
 
