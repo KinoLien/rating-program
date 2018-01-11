@@ -44,6 +44,15 @@ var app = new Vue({
 		showScoreWithPart: function(ptidx, score){
 			// event: scoreview_show_score_with_part
 			socketInstance.emit('scoreview_show_score_with_part', { score: score, ptidx: ptidx });
+		},
+		forceChangeScore: function(rdidx,ptidx,rtidx,score){
+			socketInstance.emit('console_update_score', {
+				ratingIdx: rtidx,
+				participantIdx: ptidx,
+				roundIdx: rdidx,
+				score: score
+			});
+			this.scores[rdidx][ptidx][rtidx] = parseInt(score);
 		}
 	},
 	computed: {},

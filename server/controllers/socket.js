@@ -82,6 +82,10 @@ module.exports = function (socket, io) {
         });
     });
 
+    socket.on('console_update_score', function(data){
+        io.scoreManager.setScore(data.ratingIdx, data.participantIdx, data.roundIdx, data.score);
+    })
+
     socket.on('scoreview_show_score', function(data){
         socket.to("scoreview").emit('show_score_from_console', data);
         // console.log(data);
