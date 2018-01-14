@@ -17,6 +17,13 @@ module.exports = function(app) {
     });
 
     // =====================================
+    // CONSOLE =============================
+    // =====================================
+    app.get('/consoleview', function (req, res, next) {
+        res.render(path.resolve(__dirname, '../', 'views/consoleview.ejs'), {});
+    });
+
+    // =====================================
     // SCORE VIEW ==========================
     // =====================================
     app.get('/scoreview', function (req, res, next) {
