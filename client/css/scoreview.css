@@ -21,7 +21,7 @@ abbr, acronym {border:0;}
 
 :root{
 	--var-height: 1080px;
-	--var-circle-height: calc(var(--var-height) * 0.75);
+	--var-circle-height: calc(var(--var-height) * 0.8);
 }
 
 body{
