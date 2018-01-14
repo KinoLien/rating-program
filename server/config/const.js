@@ -3,16 +3,16 @@
 module.exports = {
 	
 	ratings: [
-		{ name: "評審1" },
-		{ name: "評審2" },
-		{ name: "評審3" },
-		{ name: "評審4" }
+		{ name: "朱金泰" },
+		{ name: "包小柏" },
+		{ name: "安 棟" },
+		{ name: "薛忠銘" }
 	],
 
 	participants: [
-		{ name: "參賽者(組)1" },
-		{ name: "參賽者(組)2" },
-		{ name: "參賽者(組)3" }
+		{ name: "閩江學院" },
+		{ name: "文化大學" },
+		{ name: "福建師範大學" }
 	],
 
 	rounds: [
