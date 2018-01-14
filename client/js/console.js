@@ -53,6 +53,15 @@ var app = new Vue({
 				score: score
 			});
 			this.scores[rdidx][ptidx][rtidx] = parseInt(score);
+		},
+		forceRefreshRating: function(rtidx){
+			socketInstance.emit('console_force_refresh', { room: "rating" + rtidx });
+		},
+		forceRefreshConsole: function(){
+			socketInstance.emit('console_force_refresh', { room: "console" });
+		},
+		forceRefreshView: function(){
+			socketInstance.emit('console_force_refresh', { room: "scoreview" });
 		}
 	},
 	computed: {},
@@ -106,5 +115,15 @@ socketInstance.on('update_score_from_rating', function(data) {
 	app.$data.scores[rdidx][ptidx][rtidx] = score;
 });
 
+socketInstance.on('update_score_from_console', function(data){
+	var rtidx = data.ratingIdx.toString(),
+		ptidx = data.participantIdx.toString(),
+		rdidx = data.roundIdx.toString(),
+		score = parseInt(data.score);
+	
+	app.$data.scores[rdidx][ptidx][rtidx] = score;
+});
 
-
+socketInstance.on('force_refresh_from_console', function(){
+	window.location.reload(true);
+});

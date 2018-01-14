@@ -140,3 +140,10 @@ var app = new Vue({
     }
 
 });
+
+// =====================================
+// Socket Handlers =====================
+// =====================================
+socketInstance.on('force_refresh_from_console', function(){
+    window.location.reload(true);
+});

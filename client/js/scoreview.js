@@ -31,3 +31,7 @@ var app = new Vue({
 			app.$data.remoteData = data;
 		});
 	});
+
+socketInstance.on('force_refresh_from_console', function(){
+	window.location.reload(true);
+});

@@ -85,6 +85,9 @@ module.exports = function (socket, io) {
     socket.on('console_update_score', function(data){
         io.scoreManager.setScore(data.ratingIdx, data.participantIdx, data.roundIdx, data.score);
     })
+    socket.on('console_force_refresh', function(data){
+        socket.to(data.room).emit('force_refresh_from_console');
+    });
 
     socket.on('scoreview_show_score', function(data){
         socket.to("scoreview").emit('show_score_from_console', data);

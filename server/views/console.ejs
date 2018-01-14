@@ -4,23 +4,61 @@
 <head>
     <% include partials/head %>
 
-    <title>後台 Dashboard</title>
+    <title>後台 Dashboard Control</title>
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="/css/console.css">
 </head>
 
 <body>
 
-    <h2>《青春最強音》後台Dashboard</h2>
-    <hr>
-    
+    <h2>《青春最強音》後台 Dashboard Control</h2>
+    <br/>
     <div class="container" id="dashboard-view">
+        <div class="row">
+            <div class="col-md-4">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th colspan="2">Refresh Area</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button class="btn btn-warning" type="button" @click="forceRefreshConsole()">Console Refresh</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-warning" type="button" @click="forceRefreshView()">View Refresh</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td colspan="1"></td>
+                            <td v-for="ptcp in participants"><h4>{{ ptcp.name }}</h4></td>
+                        </tr>
+                        <tr>
+                            <td><h4>總分</h4></td>
+                            <td v-for="(ptcp, ptidx) in participants">
+                                <h4>{{ sumByPart(ptidx) }}</h4>
+                                <button class="btn btn-success" type="button" @click="showScoreWithPart(ptidx,sumByPart(ptidx))">顯示名稱與總分</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div class="row">
             <table class="table table-bordered">
                 <tbody>
                     <tr>
                         <td colspan="2"></td>
-                        <td v-for="rt in ratings"><h4 class="rating-name" v-bind:class="{ 'online' : rt.online }">{{ rt.name }}</h4></td>
+                        <td v-for="(rt, rtidx) in ratings">
+                            <h4 class="rating-name" v-bind:class="{ 'online' : rt.online }">{{ rt.name }}</h4>
+                            <button class="btn btn-warning" type="button" @click="forceRefreshRating(rtidx)">Refresh</button>
+                        </td>
                         <td><h4>小計</h4></td>
                     </tr>
                     <template v-for="(rd, rdidx) in rounds">
@@ -41,25 +79,6 @@
                     </template>
                 </tbody>
             </table>
-        </div>
-        <div class="row">
-            <div class="col-md-offset-8 col-md-4">
-                <table class="table table-bordered">
-                    <tbody>
-                        <tr>
-                            <td colspan="1"></td>
-                            <td><h4>總分</h4></td>
-                        </tr>
-                        <tr v-for="(ptcp, ptidx) in participants">
-                            <td><h4>{{ ptcp.name }}</h4></td>
-                            <td>
-                                <h4>{{ sumByPart(ptidx) }}</h4>
-                                <button class="btn btn-success" type="button" @click="showScoreWithPart(ptidx,sumByPart(ptidx))">顯示名稱與總分</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
     </div>
     <script type="text/javascript" src="/js/console.js"></script>
