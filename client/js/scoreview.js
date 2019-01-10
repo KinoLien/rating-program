@@ -16,6 +16,9 @@ var app = new Vue({
 		},
 		scoreWithName: function(){
 			return this.remoteData.name && this.remoteData.score;
+		},
+		multiScoreWithName: function(){
+			return this.remoteData.name && this.remoteData.scores && this.remoteData.scores.length;
 		}
 	},
 	watch: {},

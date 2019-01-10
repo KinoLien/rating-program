@@ -25,8 +25,13 @@
 				<p>{{ remoteData.score }}</p>
 			</div>
 			<!-- 4格 單一數字 -->
+			<p v-if="multiScoreWithName" class="school_name">{{ remoteData.name }}</p>
 			<ul v-if="multiScores" class="clearfix">
-				<li v-for="score in remoteData.scores"><p>{{ score }}</p></li>
+				<li v-for="(score, index) in remoteData.scores" class="clearfix">
+					<div :class="{ 'right' : index % 2 == 0, 'left' : index % 2 != 0 }" class="box-center">
+						<p class="nb">{{ score }}</p>
+					</div>
+				</li>
 			</ul>
 		</content>	
 	</div>

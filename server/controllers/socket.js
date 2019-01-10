@@ -99,13 +99,14 @@ module.exports = function (socket, io) {
     socket.on('scoreview_show_split_score', function(data){
         var rdidx = data.rdidx,
             ptidx = data.ptidx,
+            info = constants.participants[ptidx];
             scores = [];
 
         constants.ratings.map(function(rt, rtidx){
             scores.push(io.scoreManager.getScore(rtidx, ptidx, rdidx) || 0);
         });
 
-        socket.to("scoreview").emit('show_split_score_from_console', { scores: scores });
+        socket.to("scoreview").emit('show_split_score_from_console', { scores: scores, name: info.name });
         // console.log({ scores: scores });
     });
 
