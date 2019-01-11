@@ -72,8 +72,9 @@
 
                         <td>
                             <h4>{{ sum(scores[rdidx][ptidx]) }}</h4>
-                            <button class="btn btn-success" type="button" @click="showSplitScore(rdidx,ptidx)">顯示四格</button>
-                            <button class="btn btn-success" type="button" @click="showScore(sum(scores[rdidx][ptidx]))">顯示小計</button>
+                            <button class="btn btn-success" type="button" @click="showSplitScore(rdidx,ptidx)">名稱 四格</button>
+                            <button class="btn btn-success" type="button" @click="showScoreWithPart(ptidx,sum(scores[rdidx][ptidx]))">名稱 小計</button>
+                            <button class="btn btn-success" type="button" @click="showScore(sum(scores[rdidx][ptidx]))">小計</button>
                         </td>
                     </tr>
                     </template>

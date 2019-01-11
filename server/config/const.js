@@ -3,16 +3,16 @@
 module.exports = {
 	
 	ratings: [
-		{ name: "朱金泰" },
 		{ name: "包小柏" },
+		{ name: "薛忠銘" },
 		{ name: "安 棟" },
-		{ name: "薛忠銘" }
+		{ name: "甘世佳" }
 	],
 
 	participants: [
-		{ name: "閩江學院" },
-		{ name: "文化大學" },
-		{ name: "福建師範大學" }
+		{ name: "臺北城市科技大學" },
+		{ name: "福建師範大學" },
+		{ name: "電子科技大學" }
 	],
 
 	rounds: [
