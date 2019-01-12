@@ -144,6 +144,9 @@ var app = new Vue({
 // =====================================
 // Socket Handlers =====================
 // =====================================
-socketInstance.on('force_refresh_from_console', function(){
-    window.location.reload(true);
-});
+['force_refresh_from_console', 'reset_scores_from_console']
+    .forEach(function(evName){
+        socketInstance.on(evName, function(){
+            window.location.reload(true);
+        });
+    });

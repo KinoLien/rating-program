@@ -45,6 +45,11 @@ var app = new Vue({
 			// event: scoreview_show_score_with_part
 			socketInstance.emit('scoreview_show_score_with_part', { score: score, ptidx: ptidx });
 		},
+		resetAllScore: function(){
+			if (confirm('確定要清除全部分數嗎？')) {
+				socketInstance.emit('console_reset_scores', {});
+			} 
+		},
 		forceChangeScore: function(rdidx,ptidx,rtidx,score){
 			socketInstance.emit('console_update_score', {
 				ratingIdx: rtidx,
@@ -126,4 +131,15 @@ socketInstance.on('update_score_from_console', function(data){
 
 socketInstance.on('force_refresh_from_console', function(){
 	window.location.reload(true);
+});
+
+socketInstance.on('reset_scores_from_console', function(){
+	var appData = app.$data;
+	appData.rounds.forEach(function(rd, rdidx){ // round
+		appData.participants.forEach(function(pt, ptidx){ // participant
+			appData.ratings.forEach(function(rt, rtidx){ // rating : score
+				appData.scores[rdidx][ptidx][rtidx] = 0;
+			});
+		});
+	});
 });

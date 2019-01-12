@@ -87,6 +87,11 @@ module.exports = function (socket, io) {
         socket.to("console").emit('update_score_from_console', data);
     });
 
+    socket.on('console_reset_scores', function(){
+        io.scoreManager.reset();
+        io.emit('reset_scores_from_console'); 
+    });
+
     socket.on('console_force_refresh', function(data){
         socket.to(data.room).emit('force_refresh_from_console');
     });
